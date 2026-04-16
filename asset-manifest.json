@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/nama-repo/static/css/main.e6c13ad2.css",
+    "main.js": "/nama-repo/static/js/main.de138a26.js",
+    "static/js/453.d3435069.chunk.js": "/nama-repo/static/js/453.d3435069.chunk.js",
+    "index.html": "/nama-repo/index.html",
+    "main.e6c13ad2.css.map": "/nama-repo/static/css/main.e6c13ad2.css.map",
+    "main.de138a26.js.map": "/nama-repo/static/js/main.de138a26.js.map",
+    "453.d3435069.chunk.js.map": "/nama-repo/static/js/453.d3435069.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.de138a26.js"
+  ]
+}
