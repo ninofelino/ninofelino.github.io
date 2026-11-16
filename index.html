@@ -1,1 +1,221 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><link rel="icon" href="./favicon.ico"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#000000"/><meta name="description" content="Web site created using create-react-app"/><link rel="apple-touch-icon" href="./logo192.png"/><link rel="manifest" href="./manifest.json"/><title>React App</title><script defer="defer" src="./static/js/main.d46aed91.js"></script><link href="./static/css/main.e6c13ad2.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div></body></html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Repositories Portfolio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
+
+    <!-- Konten Utama Halaman Portfolio -->
+    <div class="max-w-5xl mx-auto px-4 py-12 sm:py-16">
+        <!-- Header Profil -->
+        <header class="mb-10 text-center max-w-2xl mx-auto">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-slate-400 mb-4">
+                <svg class="w-4 h-4 text-slate-300" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path></svg>
+                <span id="profile-username">@username</span>
+            </div>
+            <h1 id="page-title" class="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-3">Memuat Repository...</h1>
+            <p id="page-subtitle" class="text-slate-400 text-sm sm:text-base leading-relaxed"></p>
+        </header>
+
+        <!-- Kontrol Filter Kategori & Pencarian -->
+        <div class="mb-8 flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4 bg-slate-900/60 p-4 rounded-2xl border border-slate-800/80">
+            <!-- Tombol Filter Kategori -->
+            <div id="filter-container" class="flex flex-wrap items-center gap-2">
+                <!-- Diisi otomatis melalui JavaScript -->
+            </div>
+
+            <!-- Input Pencarian -->
+            <div class="relative w-full md:w-72">
+                <svg class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <input 
+                    type="text" 
+                    id="search-input" 
+                    placeholder="Cari nama, bahasa, atau tag..." 
+                    class="w-full bg-slate-950 border border-slate-800 text-slate-200 text-sm rounded-xl pl-10 pr-4 py-2.5 focus:outline-none focus:border-cyan-500 transition-colors placeholder:text-slate-600"
+                >
+            </div>
+        </div>
+
+        <!-- Info Jumlah Repo Ditampilkan -->
+        <div class="mb-4 flex items-center justify-between text-xs text-slate-500 px-1">
+            <span id="repo-count-label">Menampilkan 0 repository</span>
+            <span>Klik kartu untuk membuka repository</span>
+        </div>
+
+        <!-- Container Grid Kartu Repository -->
+        <main id="repo-container" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="text-slate-500 text-center col-span-1 md:col-span-2 py-12">Memuat data...</div>
+        </main>
+    </div>
+
+    <script>
+        let currentData = { profile: {}, repositories: [] };
+        let activeCategory = 'Semua';
+
+        // Warna badge bahasa pemrograman
+        const languageColors = {
+            'C++': 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+            'JavaScript': 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+            'TypeScript': 'bg-sky-500/10 text-sky-400 border-sky-500/20',
+            'Python': 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+            'HTML / JS': 'bg-orange-500/10 text-orange-400 border-orange-500/20',
+            'Go': 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
+            'Rust': 'bg-rose-500/10 text-rose-400 border-rose-500/20'
+        };
+
+        // Mengambil data dari file data/repos.json
+        async function init() {
+            document.getElementById('search-input').addEventListener('input', renderRepositories);
+
+            try {
+                // Parameter timestamp ditambahkan agar browser selalu mengambil versi JSON terbaru saat update
+                const response = await fetch(`./data/repos.json?v=${new Date().getTime()}`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                currentData = await response.json();
+                renderPage();
+            } catch (error) {
+                console.error('Gagal memuat data/repos.json:', error);
+                document.getElementById('page-title').textContent = 'Gagal Memuat Data';
+                document.getElementById('repo-container').innerHTML = `
+                    <div class="text-red-400 text-center col-span-1 md:col-span-2 py-12 bg-red-500/10 rounded-2xl border border-red-500/20 px-4">
+                        <p class="font-semibold text-sm mb-1">Tidak dapat membaca file <code>data/repos.json</code></p>
+                        <p class="text-xs text-red-300/80">Pastikan struktur folder Anda memiliki file <code>data/repos.json</code> dan dibuka melalui web server atau GitHub Pages.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Render seluruh elemen halaman
+        function renderPage() {
+            const profile = currentData.profile || {};
+            document.title = profile.title || 'My Repositories';
+            document.getElementById('profile-username').textContent = '@' + (profile.username || 'user');
+            document.getElementById('page-title').textContent = profile.title || 'My Repositories';
+            document.getElementById('page-subtitle').textContent = profile.subtitle || '';
+
+            const categories = ['Semua', ...new Set((currentData.repositories || []).map(r => r.category).filter(Boolean))];
+            if (!categories.includes(activeCategory)) {
+                activeCategory = 'Semua';
+            }
+
+            renderFilterButtons(categories);
+            renderRepositories();
+        }
+
+        // Render tombol filter kategori secara dinamis
+        function renderFilterButtons(categories) {
+            const filterContainer = document.getElementById('filter-container');
+            filterContainer.innerHTML = categories.map(cat => {
+                const isActive = cat === activeCategory;
+                const activeClass = isActive 
+                    ? 'bg-cyan-500 text-slate-950 font-semibold border-cyan-500 shadow-sm shadow-cyan-500/20' 
+                    : 'bg-slate-950 text-slate-300 border-slate-800 hover:border-slate-600';
+
+                return `
+                    <button 
+                        onclick="setCategory('${cat.replace(/'/g, "\\'")}')" 
+                        class="text-xs px-3.5 py-2 rounded-xl border transition-all cursor-pointer ${activeClass}"
+                    >
+                        ${cat}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        // Ubah filter kategori aktif
+        function setCategory(category) {
+            activeCategory = category;
+            const categories = ['Semua', ...new Set((currentData.repositories || []).map(r => r.category).filter(Boolean))];
+            renderFilterButtons(categories);
+            renderRepositories();
+        }
+
+        // Render daftar kartu repository
+        function renderRepositories() {
+            const container = document.getElementById('repo-container');
+            const countLabel = document.getElementById('repo-count-label');
+            const searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+            const repos = currentData.repositories || [];
+
+            const filtered = repos.filter(repo => {
+                const matchesCategory = activeCategory === 'Semua' || repo.category === activeCategory;
+                const matchesSearch = 
+                    (repo.name || '').toLowerCase().includes(searchQuery) ||
+                    (repo.description || '').toLowerCase().includes(searchQuery) ||
+                    (repo.language || '').toLowerCase().includes(searchQuery) ||
+                    (repo.category || '').toLowerCase().includes(searchQuery) ||
+                    (repo.tags || []).some(tag => tag.toLowerCase().includes(searchQuery));
+
+                return matchesCategory && matchesSearch;
+            });
+
+            countLabel.textContent = `Menampilkan ${filtered.length} dari ${repos.length} repository`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="text-slate-400 text-center col-span-1 md:col-span-2 py-14 bg-slate-900/40 rounded-2xl border border-slate-800/80">
+                        <p class="text-sm font-medium text-slate-300 mb-1">Tidak ada repository ditemukan</p>
+                        <p class="text-xs text-slate-500">Coba ubah kata kunci pencarian atau pilih kategori lain.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(repo => {
+                const langStyle = languageColors[repo.language] || 'bg-slate-800 text-slate-300 border-slate-700';
+                const tagsHtml = (repo.tags || []).map(tag => 
+                    `<span class="text-xs bg-slate-950 text-cyan-400/90 px-2.5 py-1 rounded-lg border border-slate-800">#${tag}</span>`
+                ).join('');
+
+                return `
+                    <a href="${repo.url || '#'}" target="_blank" rel="noopener noreferrer" class="flex flex-col justify-between bg-slate-900/60 border border-slate-800/90 rounded-2xl p-6 hover:border-cyan-500/50 hover:bg-slate-900 transition-all duration-200 group">
+                        <div>
+                            <div class="flex justify-between items-start gap-3 mb-2">
+                                <h2 class="text-lg font-semibold text-slate-100 group-hover:text-cyan-400 transition-colors flex items-center gap-2">
+                                    <span>${repo.name || 'Untitled Repo'}</span>
+                                    <svg class="w-4 h-4 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </h2>
+                                <span class="text-xs font-mono px-2.5 py-1 rounded-lg border shrink-0 ${langStyle}">
+                                    ${repo.language || 'Code'}
+                                </span>
+                            </div>
+                            <div class="mb-3">
+                                <span class="text-[11px] uppercase tracking-wider text-slate-500 font-semibold">${repo.category || 'Uncategorized'}</span>
+                            </div>
+                            <p class="text-slate-400 text-sm mb-6 leading-relaxed">${repo.description || 'Tidak ada deskripsi.'}</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 pt-4 border-t border-slate-800/80">
+                            ${tagsHtml}
+                        </div>
+                    </a>
+                `;
+            }).join('');
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
