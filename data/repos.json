@@ -1,1 +1,41 @@
-tes
+{
+"profile": {
+"username": "felinohakim",
+"title": "My Project Repositories",
+"subtitle": "Kumpulan project perangkat lunak, IoT, embedded system, dan otomasi."
+},
+"repositories": [
+{
+"name": "BOLDUZER",
+"description": "Sistem tracking alat berat berbasis ESP8266 & ESP32 dengan modul GPS dan Firebase Realtime Database.",
+"category": "IoT",
+"language": "C++",
+"url": "https://github.com/felinohakim/bolduzer",
+"tags": ["ESP32", "GPS", "Firebase"]
+},
+{
+"name": "Utility Logger PWA",
+"description": "Progressive Web Application untuk mencatat meteran air PDAM dan penggunaan utilitas harian secara offline-first.",
+"category": "Web App",
+"language": "JavaScript",
+"url": "https://github.com/felinohakim/utility-logger",
+"tags": ["PWA", "Tailwind", "LocalStorage"]
+},
+{
+"name": "ESP32-CAM Motion Tracker",
+"description": "Deteksi gerakan dan sistem skoring berbasis computer vision menggunakan OpenCV dan stream ESP32-CAM.",
+"category": "Computer Vision",
+"language": "Python",
+"url": "https://github.com/felinohakim/esp32-cam-cv",
+"tags": ["OpenCV", "ESP32-CAM", "Python"]
+},
+{
+"name": "Custom T12 Soldering Firmware",
+"description": "Kontroler suhu PID untuk stasiun solder T12 custom dengan tampilan layar OLED I2C dan mode sleep otomatis.",
+"category": "IoT",
+"language": "C++",
+"url": "https://github.com/felinohakim/t12-station",
+"tags": ["Embedded", "OLED", "PID"]
+}
+]
+}
